@@ -1,0 +1,70 @@
+import { Home, Users, Workflow, Settings, LogOut, LayoutTemplate, Activity, FileText } from 'lucide-react';
+
+const Sidebar = () => {
+  return (
+    <div className="w-64 h-screen bg-white border-r border-gray-200 p-4 flex flex-col">
+      <div className="mb-8">
+        <h1 className="text-xl font-bold text-gray-800">Orquestrador</h1>
+      </div>
+      <nav className="flex-1">
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="/"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <Home size={16} /> Dashboard
+            </a>
+          </li>
+          <li>
+            <a
+              href="/agentes"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <Users size={16} /> Agentes
+            </a>
+          </li>
+          <li>
+            <a
+              href="/fluxos"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <Workflow size={16} /> Fluxos
+            </a>
+          </li>
+          <li>
+            <a
+              href="/designer-fluxos"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <LayoutTemplate size={16} /> Designer de Fluxos
+            </a>
+          </li>
+          <li>
+            <a
+              href="/execucoes"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <Activity size={16} /> Execuções
+            </a>
+          </li>
+          <li>
+            <a
+              href="/configuracoes"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <Settings size={16} /> Configurações
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 w-full">
+          <LogOut size={16} /> Sair
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
