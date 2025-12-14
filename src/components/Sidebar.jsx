@@ -1,4 +1,5 @@
 import { Home, Users, Workflow, Settings, LogOut, LayoutTemplate, Activity, FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
@@ -9,52 +10,52 @@ const Sidebar = () => {
       <nav className="flex-1">
         <ul className="space-y-2">
           <li>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Home size={16} /> Dashboard
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/agentes"
+            <Link
+              to="/agentes"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Users size={16} /> Agentes
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/fluxos"
+            <Link
+              to="/fluxos"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Workflow size={16} /> Fluxos
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/designer-fluxos"
+            <Link
+              to="/designer-fluxos"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <LayoutTemplate size={16} /> Designer de Fluxos
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/execucoes"
+            <Link
+              to="/execucoes"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Activity size={16} /> Execuções
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/configuracoes"
+            <Link
+              to="/configuracoes"
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Settings size={16} /> Configurações
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
