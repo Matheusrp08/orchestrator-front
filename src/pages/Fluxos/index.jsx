@@ -20,7 +20,8 @@ const Fluxos = () => {
 
   const fetchFluxos = async () => {
     try {
-      const response = await fetch('/api/fluxos');
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/fluxos`);
       const data = await response.json();
       setFluxos(data);
     } catch (error) {
@@ -32,7 +33,8 @@ const Fluxos = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`/api/fluxos/${id}`, { method: 'DELETE' });
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      await fetch(`${baseUrl}/api/fluxos/${id}`, { method: 'DELETE' });
       fetchFluxos();
     } catch (error) {
       console.error('Erro ao deletar fluxo:', error);
@@ -42,14 +44,15 @@ const Fluxos = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
       if (currentFluxo) {
-        await fetch(`/api/fluxos/${currentFluxo.id}`, {
+        await fetch(`${baseUrl}/api/fluxos/${currentFluxo.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
       } else {
-        await fetch('/api/fluxos', {
+        await fetch(`${baseUrl}/api/fluxos`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

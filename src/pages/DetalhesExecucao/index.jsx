@@ -13,9 +13,10 @@ const DetalhesExecucao = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL;
         const [execucaoRes, logsRes] = await Promise.all([
-          fetch(`/api/execucoes/${id}`),
-          fetch(`/api/log-execucoes?execucao_id=${id}`)
+          fetch(`${baseUrl}/api/execucoes/${id}`),
+          fetch(`${baseUrl}/api/log-execucoes?execucao_id=${id}`)
         ]);
 
         const execucaoData = await execucaoRes.json();

@@ -47,7 +47,8 @@ const DesignerFluxos = () => {
 
   const salvarFluxo = async () => {
     try {
-      const response = await fetch('/api/fluxos', {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/fluxos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fluxo),

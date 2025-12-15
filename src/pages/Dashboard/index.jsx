@@ -13,10 +13,11 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL;
         const [agentesRes, fluxosRes, execucoesRes] = await Promise.all([
-          fetch('/api/agentes'),
-          fetch('/api/fluxos'),
-          fetch('/api/execucoes'),
+          fetch(`${baseUrl}/api/agentes`),
+          fetch(`${baseUrl}/api/fluxos`),
+          fetch(`${baseUrl}/api/execucoes`),
         ]);
 
         const agentes = await agentesRes.json();

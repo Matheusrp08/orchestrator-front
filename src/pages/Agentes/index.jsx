@@ -21,7 +21,8 @@ const Agentes = () => {
 
   const fetchAgentes = async () => {
     try {
-      const response = await fetch('/api/agentes');
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/agentes`);
       const data = await response.json();
       setAgentes(data);
     } catch (error) {
@@ -33,7 +34,8 @@ const Agentes = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`/api/agentes/${id}`, { method: 'DELETE' });
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      await fetch(`${baseUrl}/api/agentes/${id}`, { method: 'DELETE' });
       fetchAgentes();
     } catch (error) {
       console.error('Erro ao deletar agente:', error);
@@ -43,14 +45,15 @@ const Agentes = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
       if (currentAgente) {
-        await fetch(`/api/agentes/${currentAgente.id}`, {
+        await fetch(`${baseUrl}/api/agentes/${currentAgente.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
       } else {
-        await fetch('/api/agentes', {
+        await fetch(`${baseUrl}/api/agentes`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),

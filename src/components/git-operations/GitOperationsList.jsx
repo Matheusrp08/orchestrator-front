@@ -16,13 +16,14 @@ export const GitOperationsList = ({ workspaceId, execucaoId }) => {
       try {
         setIsLoading(true);
         let url = '';
+        const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
-        if (execucaoId) {
-          url = `/api/git-operations/execucao/${execucaoId}`;
+       if (execucaoId) {
+          url = `${baseUrl}/api/git-operations/execucao/${execucaoId}`;
         } else if (workspaceId) {
-          url = `/api/git-operations/workspace/${workspaceId}`;
+          url = `${baseUrl}/api/git-operations/workspace/${workspaceId}`;
         } else {
-          url = '/api/git-operations';
+          url = `${baseUrl}/api/git-operations`;
         }
 
         const response = await fetch(url);

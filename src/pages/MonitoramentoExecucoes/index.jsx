@@ -14,7 +14,8 @@ const MonitoramentoExecucoes = () => {
 
   const fetchExecucoes = async () => {
     try {
-      const response = await fetch('/api/execucoes');
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/execucoes`);
       const data = await response.json();
       setExecucoes(data);
     } catch (error) {

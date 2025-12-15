@@ -15,7 +15,8 @@ const ConfiguracoesTenant = () => {
 
   const fetchTenant = async () => {
     try {
-      const response = await fetch('/api/tenants/1'); // Assume tenant_id=1 para demo
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/tenants/1`); // Assume tenant_id=1 para demo
       const data = await response.json();
       setTenant(data);
       setFormData({
@@ -32,7 +33,8 @@ const ConfiguracoesTenant = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/tenants/1', {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseUrl}/api/tenants/1`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
