@@ -1,24 +1,27 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
+import { VitePWA } from 'vite-plugin-pwa'; // Opcional, se usar PWA
 
 export default defineConfig({
-  plugins: [react()],
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer],
-    },
+  plugins: [
+    react(),
+    // VitePWA({}), // Descomente se usar PWA
+  ],
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
+      }
+    }
   },
   server: {
-    port: 5173, // Porta do frontend (opcional)
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8081', // Porta do backend
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
+    port: 3000,
+    strictPort: true
+  }
 });
