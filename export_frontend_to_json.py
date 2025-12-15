@@ -1,28 +1,30 @@
 import os
 import json
 
-ROOT_PATH = r"C:\Users\Usuário\orquestradorpulseia\frontend"
-OUTPUT_FILE = "frontend_export.json"
+# =========================
+# CONFIGURAÇÕES
+# =========================
+ROOT_PATH_FRONTEND = r"C:\Users\Usuário\orquestradorpulseia\frontend"
+ROOT_PATH_BACKEND = r"C:\Users\Usuário\orquestradorpulseia\orchestrator"
+OUTPUT_FILE = "deploy_config.json"
 
-# Pastas que não devem ser exportadas
-IGNORE_DIRS = {
-    "node_modules",
-    ".git",
-    "dist",
-    "build",
-    ".next",
-    ".vscode"
+# Pastas que queremos ignorar
+IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", ".vscode", "__pycache__"}
+
+# Arquivos de configuração relevantes
+CONFIG_FILES = {
+    "frontend": ["package.json", "vercel.json", ".env", "tsconfig.json"],
+    "backend": ["fly.toml", "application.properties", "application.yml", ".env", "pom.xml", "build.gradle"]
 }
 
-# Extensões que normalmente fazem sentido exportar
 ALLOWED_EXTENSIONS = {
-    ".js", ".ts", ".jsx", ".tsx",
-    ".html", ".css", ".scss",
-    ".json", ".env",
-    ".md", ".txt"
+    ".js", ".ts", ".jsx", ".tsx", ".html", ".css", ".scss",
+    ".json", ".env", ".toml", ".yml", ".yaml", ".properties", ".md", ".txt"
 }
 
-
+# =========================
+# FUNÇÕES
+# =========================
 def read_file_safe(path):
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -30,8 +32,7 @@ def read_file_safe(path):
     except Exception:
         return "<<Arquivo binário ou não legível>>"
 
-
-def build_tree(path):
+def build_tree(path, allowed_files=None):
     tree = {
         "name": os.path.basename(path),
         "type": "directory",
@@ -44,7 +45,7 @@ def build_tree(path):
         if os.path.isdir(full_path):
             if item in IGNORE_DIRS:
                 continue
-            tree["children"].append(build_tree(full_path))
+            tree["children"].append(build_tree(full_path, allowed_files))
 
         else:
             ext = os.path.splitext(item)[1]
@@ -54,7 +55,7 @@ def build_tree(path):
                 "extension": ext,
             }
 
-            if ext in ALLOWED_EXTENSIONS or item in ("package.json", "tsconfig.json"):
+            if (allowed_files and item in allowed_files) or ext in ALLOWED_EXTENSIONS:
                 file_data["content"] = read_file_safe(full_path)
             else:
                 file_data["content"] = "<<Ignorado>>"
@@ -63,11 +64,28 @@ def build_tree(path):
 
     return tree
 
+# =========================
+# EXECUÇÃO PRINCIPAL
+# =========================
+def main():
+    frontend_tree = build_tree(ROOT_PATH_FRONTEND, CONFIG_FILES["frontend"])
+    backend_tree = build_tree(ROOT_PATH_BACKEND, CONFIG_FILES["backend"])
 
-if __name__ == "__main__":
-    project_tree = build_tree(ROOT_PATH)
+    output = {
+        "frontend": {
+            "root_path": os.path.abspath(ROOT_PATH_FRONTEND),
+            "files": frontend_tree
+        },
+        "backend": {
+            "root_path": os.path.abspath(ROOT_PATH_BACKEND),
+            "files": backend_tree
+        }
+    }
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(project_tree, f, indent=2, ensure_ascii=False)
+        json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Projeto exportado com sucesso para {OUTPUT_FILE}")
+    print(f"✅ JSON de deploy combinado gerado com sucesso: {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    main()

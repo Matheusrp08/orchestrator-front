@@ -1,0 +1,1 @@
+{"frontend": {"root_path": "C:\\Users\\Usuário\\orquestradorpulseia\\frontend", "config_files": {".env": "# .env\nVITE_API_BASE_URL=http://localhost:8081  # Porta padrão do backend\n"}}, "backend": {"root_path": "C:\\Users\\Usuário\\orquestradorpulseia\\orchestrator", "config_files": {}}}
