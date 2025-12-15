@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Clock, CheckCircle2, AlertCircle, XCircle, ArrowLeft, FileText } from 'lucide-react';
+import { Clock, CheckCircle2, AlertCircle, XCircle, ArrowLeft, FileText, PlayCircle, GitCommit } from 'lucide-react';
+import { GitOperationsList } from '../../components/git-operations/GitOperationsList';
 
 const DetalhesExecucao = () => {
   const { id } = useParams();
@@ -10,31 +11,27 @@ const DetalhesExecucao = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchExecucao();
-    fetchLogs();
+    const fetchData = async () => {
+      try {
+        const [execucaoRes, logsRes] = await Promise.all([
+          fetch(`/api/execucoes/${id}`),
+          fetch(`/api/log-execucoes?execucao_id=${id}`)
+        ]);
+
+        const execucaoData = await execucaoRes.json();
+        const logsData = await logsRes.json();
+
+        setExecucao(execucaoData);
+        setLogs(logsData);
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [id]);
-
-  const fetchExecucao = async () => {
-    try {
-      const response = await fetch(`/api/execucoes/${id}`);
-      const data = await response.json();
-      setExecucao(data);
-    } catch (error) {
-      console.error('Erro ao buscar execução:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchLogs = async () => {
-    try {
-      const response = await fetch(`/api/log-execucoes?execucao_id=${id}`);
-      const data = await response.json();
-      setLogs(data);
-    } catch (error) {
-      console.error('Erro ao buscar logs:', error);
-    }
-  };
 
   const getStatusInfo = () => {
     if (!execucao) return {};
@@ -96,7 +93,9 @@ const DetalhesExecucao = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Coluna principal com informações */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Informações Básicas */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-xl font-semibold mb-4">Informações Básicas</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -124,6 +123,7 @@ const DetalhesExecucao = () => {
             </div>
           </div>
 
+          {/* Inputs */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-xl font-semibold mb-4">Inputs</h2>
             <pre className="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto">
@@ -131,6 +131,7 @@ const DetalhesExecucao = () => {
             </pre>
           </div>
 
+          {/* Outputs */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-xl font-semibold mb-4">Outputs</h2>
             <pre className="bg-gray-100 p-4 rounded-lg text-sm overflow-x-auto">
@@ -138,6 +139,7 @@ const DetalhesExecucao = () => {
             </pre>
           </div>
 
+          {/* Erros */}
           {execucao.erros && (
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h2 className="text-xl font-semibold mb-4">Erros</h2>
@@ -146,8 +148,18 @@ const DetalhesExecucao = () => {
               </pre>
             </div>
           )}
+
+          {/* Operações Git */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <div className="flex items-center gap-2 mb-4">
+              <GitCommit className="h-5 w-5 text-gray-600" />
+              <h2 className="text-xl font-semibold">Operações Git</h2>
+            </div>
+            <GitOperationsList execucaoId={id} />
+          </div>
         </div>
 
+        {/* Coluna de logs */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-fit">
           <h2 className="text-xl font-semibold mb-4">Logs</h2>
           <div className="space-y-4 max-h-[600px] overflow-y-auto">
@@ -163,7 +175,7 @@ const DetalhesExecucao = () => {
                       {log.nivel}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-800">{log.mensagem}</p>
+                                    <p className="text-sm text-gray-800">{log.mensagem}</p>
                   {log.metadata && (
                     <pre className="bg-gray-50 p-2 rounded text-xs overflow-x-auto mt-2">
                       {JSON.stringify(log.metadata, null, 2)}

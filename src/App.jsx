@@ -1,3 +1,4 @@
+// src/App.jsx (completo com a nova rota)
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -8,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import MonitoramentoExecucoes from './pages/MonitoramentoExecucoes';
 import DetalhesExecucao from './pages/DetalhesExecucao';
 import ConfiguracoesTenant from './pages/ConfiguracoesTenant';
+import GitOperationsPage from './pages/GitOperations';
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
               <Route path="/execucoes" element={<MonitoramentoExecucoes />} />
               <Route path="/execucoes/:id" element={<DetalhesExecucao />} />
               <Route path="/configuracoes" element={<ConfiguracoesTenant />} />
+              <Route path="/git-operations" element={<GitOperationsPage />} />
+              <Route path="/execucoes/:id/git-operations" element={<GitOperationsPage />} />
             </Routes>
           </main>
         </div>

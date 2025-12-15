@@ -1,4 +1,5 @@
-import { Home, Users, Workflow, Settings, LogOut, LayoutTemplate, Activity, FileText } from 'lucide-react';
+// src/components/Sidebar.jsx (modificado para incluir link para Git Operations)
+import { Home, Users, Workflow, Settings, LogOut, LayoutTemplate, Activity, GitCommit } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -47,6 +48,14 @@ const Sidebar = () => {
               className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
             >
               <Activity size={16} /> Execuções
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/git-operations"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700"
+            >
+              <GitCommit size={16} /> Operações Git
             </Link>
           </li>
           <li>
